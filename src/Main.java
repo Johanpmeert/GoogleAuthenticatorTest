@@ -69,8 +69,8 @@ public class Main {
         }
     }
 
-    private static String GoogleAuthenticatorCode(String secret)  {
-        if (secret.isEmpty()) {
+    private static String GoogleAuthenticatorCode(String secret) {
+        if ((secret == null) || (secret.isEmpty())) {
             throw new IllegalArgumentException("Secret key is blank or null");
         }
         long value = new Date().getTime() / TimeUnit.SECONDS.toMillis(30);
