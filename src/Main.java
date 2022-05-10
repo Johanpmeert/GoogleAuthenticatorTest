@@ -23,28 +23,32 @@ public class Main {
     private static final String AUTH_TITLE = "Test123"; // This name will show up in your Google Authenticator
 
     public static void main(String[] args) throws WriterException, InterruptedException {
-        String secretKey = createAuthenticatorCode();
-        System.out.println("Random generated Authenticator Secret Key :");
-        System.out.println(stringPer4(secretKey.toLowerCase(Locale.ROOT)));
-        //
-        // Show QR code in window
-        JFrame f = new JFrame("Authenticator QR code");
-        f.setLayout(new FlowLayout());
-        f.setSize(400, 400);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JLabel j = new JLabel();
-        j.setIcon(new ImageIcon(createQRImage("otpauth://totp/" + AUTH_TITLE + "?secret=" + secretKey, 350)));
-        f.add(j);
-        f.setVisible(true);
-        //
-        String lastCode = null;
-        while (true) {
-            String code = GoogleAuthenticatorCode(secretKey);
-            if (!code.equals(lastCode)) {
-                System.out.println(code);
+        if ((args == null) || (args.length == 0)) {
+            String secretKey = createAuthenticatorCode();
+            System.out.println("Random generated Authenticator Secret Key :");
+            System.out.println(stringPer4(secretKey.toLowerCase(Locale.ROOT)));
+            //
+            // Show QR code in window
+            JFrame f = new JFrame("Authenticator QR code");
+            f.setLayout(new FlowLayout());
+            f.setSize(400, 400);
+            f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            JLabel j = new JLabel();
+            j.setIcon(new ImageIcon(createQRImage("otpauth://totp/" + AUTH_TITLE + "?secret=" + secretKey, 350)));
+            f.add(j);
+            f.setVisible(true);
+            //
+            String lastCode = null;
+            while (true) {
+                String code = GoogleAuthenticatorCode(secretKey);
+                if (!code.equals(lastCode)) {
+                    System.out.println(code);
+                }
+                lastCode = code;
+                Thread.sleep(2000);
             }
-            lastCode = code;
-            Thread.sleep(2000);
+        } else {
+            System.out.println(GoogleAuthenticatorCode(args[0].replaceAll(" ", "")));
         }
     }
 
@@ -71,7 +75,7 @@ public class Main {
 
     private static String GoogleAuthenticatorCode(String secret) {
         if ((secret == null) || (secret.isEmpty())) {
-            throw new IllegalArgumentException("Secret key is blank or null");
+            throw new IllegalArgumentException("Secret key is empty or null");
         }
         long value = new Date().getTime() / TimeUnit.SECONDS.toMillis(30);
         Base32 base = new Base32();
@@ -95,9 +99,8 @@ public class Main {
         StringBuilder builder = new StringBuilder();
         int counter = 0;
         while (counter < string.length()) {
-            builder.append(string.charAt(counter));
-            if ((counter + 1) % 4 == 0) builder.append(" ");
-            counter++;
+            builder.append(string.charAt(counter++));
+            if (counter % 4 == 0) builder.append(" ");
         }
         return builder.toString();
     }

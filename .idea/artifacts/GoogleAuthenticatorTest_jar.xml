@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="GoogleAuthenticatorTest:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/GoogleAuthenticatorTest_jar</output-path>
+    <root id="archive" name="GoogleAuthenticatorTest.jar">
+      <element id="module-output" name="GoogleAuthenticatorTest" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/commons-codec/commons-codec/1.15/commons-codec-1.15.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/zxing/core/3.5.0/core-3.5.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
